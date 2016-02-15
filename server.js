@@ -1,22 +1,11 @@
 var express = require('express');
 var app = express();
 var PORT = process.env.PORT || 3000;
-var todos = [{
-	description: "Learn Express",
-	completed: false,
-	id:1
-},
-{
-	description: "Learn Git and be awesome",
-	completed: true,
-	id:2
-},
-{
-	description: "Deploy to Heroku",
-	completed: false,
-	id:3
-}
-];
+var todos = [];
+var bodyParser = require('body-parser');
+var todosIndex =1;
+
+app.use(bodyParser.json());
 
 
 
@@ -25,7 +14,7 @@ app.get('/', function(req,res){
 }) ;
 
 app.get('/todos', function(req,res){
-	res.json(todos);
+	res.send(JSON.stringify(todos,null, 4));
 });
 
 app.get('/todos/:id', function(req,res){
@@ -45,6 +34,16 @@ app.get('/todos/:id', function(req,res){
 	else{
 		res.status(404).send();
 	}
+});
+
+app.post('/todos',function(req, res){
+	var body = req.body;
+	console.log("description: " + body.description);
+	body.id = todosIndex;
+	todosIndex++;
+	todos.push(body);
+
+	res.json(body);
 });
 
 
