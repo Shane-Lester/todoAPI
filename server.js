@@ -79,7 +79,6 @@ app.put('/todos/:id',function(req,res){
 
 	if(body.hasOwnProperty('completed') && _.isBoolean(body.completed)){
 		validAttributes.completed = body.completed;
-		res.json(foundTodo);
 	}
 	else if(body.hasOwnProperty('completed')){
 		return res.status(400).send();
@@ -87,7 +86,7 @@ app.put('/todos/:id',function(req,res){
 
 	if(body.hasOwnProperty('description') && _.isString(body.description) && body.description.trim().length >0){
 		validAttributes.description = body.description;
-		res.json(foundTodo);
+		
 
 	}
 	else if(body.hasOwnProperty('description')){
@@ -95,6 +94,7 @@ app.put('/todos/:id',function(req,res){
 	}
 	
 	_.extend(foundTodo,validAttributes);
+	res.json(foundTodo);
 
 
 
