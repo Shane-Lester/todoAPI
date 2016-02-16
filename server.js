@@ -28,6 +28,13 @@ app.get('/todos', function(req,res){
 		// console.log('Completed is false');
 		}
 	
+	if(params.hasOwnProperty('q') && params.q.trim().length >0){
+		var searchParam = params.q;
+		filteredTodos= _.filter(filteredTodos,function(todo){
+			return todo.description.indexOf(searchParam) > -1;
+		});
+	}
+
 	res.json(filteredTodos);
 });
 
