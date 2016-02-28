@@ -196,28 +196,41 @@ app.put('/todos/:id', function(req, res) {
 
 	db.todo.findById(lookedforID)
 		.then(function(todo) {
-			if (todo) {
-				todo.update(attributes)
-					.then(function(todo) {
-						res.json(todo.toJSON());
+				if (todo) {
+					todo.update(attributes)
+						.then(function(todo) {
+							res.json(todo.toJSON());
 
-					}, function(error) {
-						res.status(400).json(error);
-					})
+						}, function(error) {
+							res.status(400).json(error);
+						})
 
 
-			} else {
-				res.status(404).send();
-			}
-		}, 
-		function(error) {
-			res.status(500).send(error);
-		})
+				} else {
+					res.status(404).send();
+				}
+			},
+			function(error) {
+				res.status(500).send(error);
+			})
 
 	// _.extend(foundTodo, validAttributes);
 	// res.json(foundTodo);
 
 
+
+});
+
+app.post('/users', function(req, res) {
+	var body = _.pick(req.body, 'email', 'password');
+
+	db.user.create(body)
+		.then(function(todo) {
+				res.status(200).send(todo.toJSON());
+			},
+			function(error) {
+				res.status(400).json(error);
+			})
 
 });
 
