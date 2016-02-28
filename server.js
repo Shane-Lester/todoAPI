@@ -226,7 +226,7 @@ app.post('/users', function(req, res) {
 
 	db.user.create(body)
 		.then(function(todo) {
-				res.status(200).send(todo.toJSON());
+				res.status(200).send(todo.toPublicJSON());
 			},
 			function(error) {
 				res.status(400).json(error);
