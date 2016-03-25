@@ -225,8 +225,8 @@ app.post('/users', function(req, res) {
 	var body = _.pick(req.body, 'email', 'password');
 
 	db.user.create(body)
-		.then(function(todo) {
-				res.status(200).send(todo.toPublicJSON());
+		.then(function(user) {
+				res.status(200).send(user.toPublicJSON());
 			},
 			function(error) {
 				res.status(400).json(error);
