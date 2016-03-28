@@ -241,7 +241,7 @@ app.post('/users/login', function(req, res) {
 
 	db.user.authenticate(body).then(
 		function(user){
-			res.json(user.toPublicJSON());
+			res.header('Auth',user.generateToken('authentication')).json(user.toPublicJSON());
 
 		},
 		function(){
@@ -253,7 +253,7 @@ app.post('/users/login', function(req, res) {
 
 
 
-db.sequelize.sync().then(function() {
+db.sequelize.sync({force:true}).then(function() {
 
 	app.listen(PORT, function() {
 		console.log('Express server listening on port ' + PORT + '!');
