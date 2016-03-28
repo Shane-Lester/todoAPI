@@ -7,6 +7,8 @@ var todosIndex = 1;
 var _ = require('underscore');
 var db = require('./db.js');
 var bcrypt = require('bcrypt');
+var middleware = require('./middleware.js')(db);
+
 
 app.use(bodyParser.json());
 
@@ -16,7 +18,7 @@ app.get('/', function(req, res) {
 	res.send('Todo API root');
 });
 
-app.get('/todos', function(req, res) {
+app.get('/todos', middleware.requireAuthentication, function(req, res) {
 	var query = req.query;
 	var where = {};
 
@@ -69,7 +71,7 @@ app.get('/todos', function(req, res) {
 	// res.json(filteredTodos);
 });
 
-app.get('/todos/:id', function(req, res) {
+app.get('/todos/:id', middleware.requireAuthentication,function(req, res) {
 	var lookedforID = parseInt(req.params.id, 10);
 
 	db.todo.findById(lookedforID)
@@ -99,7 +101,7 @@ app.get('/todos/:id', function(req, res) {
 	// }
 });
 
-app.post('/todos', function(req, res) {
+app.post('/todos', middleware.requireAuthentication,function(req, res) {
 	var body = _.pick(req.body, 'description', 'completed');
 	body.description = body.description.trim();
 
@@ -127,7 +129,7 @@ app.post('/todos', function(req, res) {
 	// res.json(body);
 });
 
-app.delete('/todos/:id', function(req, res) {
+app.delete('/todos/:id', middleware.requireAuthentication, function(req, res) {
 	var lookedforID = parseInt(req.params.id, 10);
 
 	db.todo.findById(lookedforID)
@@ -163,7 +165,7 @@ app.delete('/todos/:id', function(req, res) {
 	// }
 });
 
-app.put('/todos/:id', function(req, res) {
+app.put('/todos/:id', middleware.requireAuthentication, function(req, res) {
 	var lookedforID = parseInt(req.params.id, 10);
 	console.log(lookedforID);
 	// var foundTodo = _.findWhere(todos, {
